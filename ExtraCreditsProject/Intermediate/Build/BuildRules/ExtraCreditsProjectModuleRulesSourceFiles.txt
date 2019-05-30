@@ -1,3 +1,0 @@
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Source\ExtraCreditsProject\ExtraCreditsProject.Build.cs
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Source\ExtraCreditsProject.Target.cs
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Source\ExtraCreditsProjectEditor.Target.cs

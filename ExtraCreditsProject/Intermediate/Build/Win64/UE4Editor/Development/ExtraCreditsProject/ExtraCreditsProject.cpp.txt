@@ -1,2 +1,0 @@
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Intermediate\Build\Win64\UE4Editor\Development\ExtraCreditsProject\Definitions.ExtraCreditsProject.h
-g:\ue4 projects\extra life\extra-credits-4\extracreditsproject\source\extracreditsproject\ExtraCreditsProject.h

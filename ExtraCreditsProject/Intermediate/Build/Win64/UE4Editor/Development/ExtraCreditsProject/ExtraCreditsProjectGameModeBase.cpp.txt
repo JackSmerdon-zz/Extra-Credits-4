@@ -1,7 +1,0 @@
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Intermediate\Build\Win64\UE4Editor\Development\ExtraCreditsProject\Definitions.ExtraCreditsProject.h
-g:\ue4 projects\extra life\extra-credits-4\extracreditsproject\source\extracreditsproject\ExtraCreditsProjectGameModeBase.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
-G:\Games\Epic Games\UE_4.22\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
-G:\Games\Epic Games\UE_4.22\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Intermediate\Build\Win64\UE4Editor\Inc\ExtraCreditsProject\ExtraCreditsProjectGameModeBase.generated.h

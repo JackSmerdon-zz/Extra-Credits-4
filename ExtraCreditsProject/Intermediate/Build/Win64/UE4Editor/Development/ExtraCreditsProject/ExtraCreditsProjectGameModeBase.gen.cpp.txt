@@ -1,9 +1,0 @@
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Intermediate\Build\Win64\UE4Editor\Development\ExtraCreditsProject\Definitions.ExtraCreditsProject.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
-G:\UE4 Projects\Extra Life\Extra-Credits-4\ExtraCreditsProject\Source\ExtraCreditsProject/ExtraCreditsProjectGameModeBase.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
-G:\Games\Epic Games\UE_4.22\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
-G:\Games\Epic Games\UE_4.22\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
-G:\Games\Epic Games\UE_4.22\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
-g:\ue4 projects\extra life\extra-credits-4\extracreditsproject\intermediate\build\win64\ue4editor\inc\extracreditsproject\ExtraCreditsProjectGameModeBase.generated.h
