@@ -18,11 +18,24 @@ public:
 	const float getWifiHealth(){return wifiHealth;}
 	void setWifiHealth(float f) { wifiHealth = f; }
 
+	void WithinWifiRange(float f);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	void deplete(float f);
+
+	void noWifi();
+
+	bool hasWifi = false;
+
+	UPROPERTY(EditAnywhere, Category = "Points")
 	float wifiHealth = 10.0f;
+	UPROPERTY(EditAnywhere, Category = "Points")
+	float defaultDepleteRate = 0.5f;
+	UPROPERTY(EditAnywhere, Category = "Points")
+	float currentDepleteRate = 0.1f;
 
 
 public:	

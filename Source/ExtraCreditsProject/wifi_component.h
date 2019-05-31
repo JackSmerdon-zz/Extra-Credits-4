@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameFramework/Character.h"
 #include "EngineUtils.h"
+#include "Classes/Kismet/GameplayStatics.h"
+#include "Public/PlayerWifiModule.h"
 #include "wifi_component.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -24,10 +27,13 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	float wifiRange = 20.0f;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//class PlayerWifiModule *player;
+	UPROPERTY(EditAnywhere)
+	class UPlayerWifiModule *player;
+	UPROPERTY(EditAnywhere)
+	float depletion = 0.1f;
+	ACharacter* myCharacter;
 
-	AActor* player;
+	float distance = 0.0f;
 
 public:	
 	// Called every frame

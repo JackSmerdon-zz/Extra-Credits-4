@@ -9,8 +9,6 @@ Uwifi_component::Uwifi_component()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -18,20 +16,21 @@ Uwifi_component::Uwifi_component()
 void Uwifi_component::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//player = FindObject<AActor>(Level, "MainCharacter");
+	myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	if(myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
 
 }
 
-//AActor* Uwifi_component::findPlayer() {
-//
-//	return nullptr;
-//}
 // Called every frame
 void Uwifi_component::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	distance = FVector::Dist(myCharacter->GetActorLocation(), this->GetOwner()->GetActorLocation());
+
+	if (distance >= wifiRange) {
+		if(player != nullptr) player->WithinWifiRange(depletion);
+	}
 	// ...
 }
 
