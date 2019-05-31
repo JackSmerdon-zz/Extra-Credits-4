@@ -9,9 +9,11 @@
 /**
  * 
  */
-UCLASS()
-class EXTRACREDITSPROJECT_API AExtraCreditsProjectGameModeBase : public AGameModeBase
+UCLASS(minimalapi)
+class AExtraCreditsProjectGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+	public:
+		AExtraCreditsProjectGameModeBase();
 };
