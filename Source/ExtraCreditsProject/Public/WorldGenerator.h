@@ -3,6 +3,8 @@
 #pragma once
 
 #include "Engine.h"
+#include "Building.h"
+#include "Road.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "WorldGenerator.generated.h"
@@ -16,7 +18,7 @@ class EXTRACREDITSPROJECT_API AWorldGenerator : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWorldGenerator();
-	void SpawnTile(int8 tileType, int8 tileIndex);
+	void SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
 
 protected:
 	// Called when the game starts or when spawned
