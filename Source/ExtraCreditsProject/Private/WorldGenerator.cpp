@@ -17,7 +17,8 @@ AWorldGenerator::AWorldGenerator()
 void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	world = GetWorld();
+	SpawnTile(0, 0, FVector(250, 0, 250), FRotator(0,0,0));
 }
 
 // Called every frame
@@ -26,14 +27,16 @@ void AWorldGenerator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex)
+void AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation)
 {
+	FActorSpawnParameters spawnParams;
+
 	switch (tileType)
 	{
 		case 0:
 		{
 			//Road
-			world->SpawnActor<RoadBP>();
+			ARoad* road = world->SpawnActor<ARoad>(Roads[tileIndex], position, rotation, spawnParams);
 			break;
 		}
 		case 1:
@@ -42,9 +45,4 @@ void AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex)
 			break;
 		}
 	}
-
-	//world->SpawnActor<>
-
-
-	//world->SpawnActor<ATerrainSegment>(Segments[segmentNum], spawnLocation, spawnRotation, spawnParams);
 }
