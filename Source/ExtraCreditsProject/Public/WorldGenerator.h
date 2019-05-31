@@ -16,11 +16,15 @@ class EXTRACREDITSPROJECT_API AWorldGenerator : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWorldGenerator();
-	void SpawnTile(int8 tileType);
+	void SpawnTile(int8 tileType, int8 tileIndex);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<AActor>> Roads;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<AActor>> Buildings;
 
 public:	
 	// Called every frame
@@ -28,4 +32,5 @@ public:
 
 private:
 	UWorld* world;
+	
 };

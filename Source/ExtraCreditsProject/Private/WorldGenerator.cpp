@@ -24,16 +24,16 @@ void AWorldGenerator::BeginPlay()
 void AWorldGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	print("hello");
 }
 
-void AWorldGenerator::SpawnTile(int8 tileType)
+void AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex)
 {
 	switch (tileType)
 	{
 		case 0:
 		{
 			//Road
+			world->SpawnActor<RoadBP>();
 			break;
 		}
 		case 1:
@@ -43,7 +43,7 @@ void AWorldGenerator::SpawnTile(int8 tileType)
 		}
 	}
 
-
+	//world->SpawnActor<>
 
 
 	//world->SpawnActor<ATerrainSegment>(Segments[segmentNum], spawnLocation, spawnRotation, spawnParams);
