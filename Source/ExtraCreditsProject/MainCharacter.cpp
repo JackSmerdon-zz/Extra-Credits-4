@@ -21,7 +21,7 @@ AMainCharacter::AMainCharacter()
 
 	MainCameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("MainCameraSpringArm"));
 	MainCameraSpringArm->SetupAttachment(RootComponent);
-	//MainCameraSpringArm->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(-90.0f, 0.0f, 0.0f));
+	MainCameraSpringArm->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(-90.0f, 0.0f, 0.0f));
 	MainCameraSpringArm->TargetArmLength = 1200.f;
 	MainCameraSpringArm->bUsePawnControlRotation = false;
 
