@@ -16,7 +16,8 @@ UPlayerWifiModule::UPlayerWifiModule()
 void UPlayerWifiModule::WithinWifiRange(float f)
 {
 	hasWifi = true;
-	currentDepleteRate = f;
+	if(f > currentDepleteRate)
+		currentDepleteRate = f;
 }
 
 // Called when the game starts

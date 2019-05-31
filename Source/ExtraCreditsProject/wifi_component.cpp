@@ -16,8 +16,10 @@ Uwifi_component::Uwifi_component()
 void Uwifi_component::BeginPlay()
 {
 	Super::BeginPlay();
+
 	myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	if(myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
+	DrawDebugSphere(GetWorld(), this->GetOwner()->GetActorLocation(), wifiRange, 26, FColor(0, 255, 0), true, -1, 0, 0);
 
 }
 

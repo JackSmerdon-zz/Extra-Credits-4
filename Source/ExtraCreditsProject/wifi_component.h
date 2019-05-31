@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EngineUtils.h"
 #include "Classes/Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 #include "Public/PlayerWifiModule.h"
 #include "wifi_component.generated.h"
 
@@ -26,7 +27,8 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	float wifiRange = 20.0f;
+	UPROPERTY(EditAnywhere)
+	float wifiRange = 1500.0f;
 	UPROPERTY(EditAnywhere)
 	class UPlayerWifiModule *player;
 	UPROPERTY(EditAnywhere)
