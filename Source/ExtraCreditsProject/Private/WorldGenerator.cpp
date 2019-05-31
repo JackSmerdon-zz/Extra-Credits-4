@@ -27,3 +27,24 @@ void AWorldGenerator::Tick(float DeltaTime)
 	print("hello");
 }
 
+void AWorldGenerator::SpawnTile(int8 tileType)
+{
+	switch (tileType)
+	{
+		case 0:
+		{
+			//Road
+			break;
+		}
+		case 1:
+		{
+			//Building
+			break;
+		}
+	}
+
+
+
+
+	//world->SpawnActor<ATerrainSegment>(Segments[segmentNum], spawnLocation, spawnRotation, spawnParams);
+}
