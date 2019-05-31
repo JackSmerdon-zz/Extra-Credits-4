@@ -18,7 +18,7 @@ void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 	world = GetWorld();
-	SpawnTile(0, 0, FVector(0, 0, 25), FRotator(0,0,0));
+	SpawnTile(0, 0, FVector(250, 0, 250), FRotator(0,0,0));
 }
 
 // Called every frame
@@ -36,7 +36,7 @@ void AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex, FVector position,
 		case 0:
 		{
 			//Road
-			world->SpawnActor<AWorldGenerator>(Roads[tileIndex], position, rotation, spawnParams);
+			ARoad* road = world->SpawnActor<ARoad>(Roads[tileIndex], position, rotation, spawnParams);
 			break;
 		}
 		case 1:
