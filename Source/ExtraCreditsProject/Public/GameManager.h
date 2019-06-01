@@ -24,6 +24,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, Category = "GameTime")
+		class UGameTime *gameTime;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
