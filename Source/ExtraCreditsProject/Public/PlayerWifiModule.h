@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "wifi_component.h"
 #include "PlayerWifiModule.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -17,14 +18,19 @@ public:
 
 	const float getWifiHealth(){return wifiHealth;}
 	void setWifiHealth(float f) { wifiHealth = f; }
-
+	void addWifiToList(Uwifi_component * comp);
+	void removeWifiFromList(Uwifi_component * comp);
 	void WithinWifiRange(float f);
+
+	float getMaxWifiRange() { return maxWifiSignalRange; }
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	void deplete(float f);
+
+	void sortWifiArray();
 
 	void noWifi();
 
@@ -37,6 +43,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Points")
 	float currentDepleteRate = 0.5f;
 
+	UPROPERTY(EditAnywhere, Category = "Points")
+	float maxWifiSignalRange = 10000.0f;
+
+	TArray<Uwifi_component*> nearbyWifiComponents;
 
 public:	
 	// Called every frame

@@ -13,6 +13,29 @@ UPlayerWifiModule::UPlayerWifiModule()
 }
 
 
+
+void UPlayerWifiModule::addWifiToList(Uwifi_component * comp)
+{
+	if (!nearbyWifiComponents.Contains(comp)) 
+	{
+		int listCount = nearbyWifiComponents.Num;
+		if (listCount == 0) nearbyWifiComponents.Add(comp);
+		else 
+		{
+			nearbyWifiComponents.Add(comp);
+			sortWifiArray();
+		}
+	}
+}
+
+void UPlayerWifiModule::removeWifiFromList(Uwifi_component * comp)
+{
+	if (nearbyWifiComponents.Contains(comp)) 
+	{
+		nearbyWifiComponents.Remove(comp);
+	}
+}
+
 void UPlayerWifiModule::WithinWifiRange(float f)
 {
 	hasWifi = true;
@@ -34,6 +57,19 @@ void UPlayerWifiModule::deplete(float f)
 	wifiHealth -= currentDepleteRate * f;
 }
 
+void UPlayerWifiModule::sortWifiArray()
+{
+	int numberOfElements = nearbyWifiComponents.Num;
+	if (numberOfElements > 0) {
+		for (int i = 0; i < numberOfElements; i++) {
+			for (int j = 0; j < numberOfElements - i; j++)
+				if(j+1 < numberOfElements)
+					if ((nearbyWifiComponents[j]->getWifiDistance() - nearbyWifiComponents[j]->getWifiHealth()) > (nearbyWifiComponents[j + 1]->getWifiDistance() - nearbyWifiComponents[j + 1]->getWifiHealth()))
+						nearbyWifiComponents.Swap(j, j + 1);
+		}
+	}
+}
+
 void UPlayerWifiModule::noWifi()
 {
 	hasWifi = false;
@@ -48,7 +84,7 @@ void UPlayerWifiModule::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 	//depleate wifi health
 	deplete(DeltaTime);
-
+	sortWifiArray();
 	//disable bool (will be re-enabled by wifi component)
 	noWifi();
 	// ...

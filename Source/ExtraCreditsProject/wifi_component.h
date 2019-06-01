@@ -27,6 +27,8 @@ public:
 	void setMaxWifiHealth(float f);
 	const float getMaxWifiHealth() { return maxWifiHealth; }
 	const float getWifiHealth() { return wifiHealth; }
+
+	const float getWifiDistance() { return distance; }
 	
 
 protected:
@@ -43,6 +45,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 	float wifiHealth = 100.0f;
 	ACharacter* myCharacter;
+
+	bool isInPlayerList = false;
 
 	float distance = 0.0f;
 
