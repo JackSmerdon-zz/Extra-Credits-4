@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Building.h"
 #include "Road.h"
+#include "Park.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "WorldGenerator.generated.h"
@@ -26,6 +27,8 @@ protected:
 		TArray<TSubclassOf<AActor>> Roads;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<TSubclassOf<AActor>> Buildings;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<AActor>> Parks;
 
 public:	
 	// Called every frame
@@ -44,6 +47,7 @@ private:
 
 	void generateWorld();
 	void genBuildings();
+	void genParks();
 	void genRoads();
 	void genLowFreq();
 };

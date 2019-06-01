@@ -113,6 +113,11 @@ void AWorldGenerator::genBuildings()
 	}
 }
 
+void AWorldGenerator::genParks()
+{
+
+}
+
 void AWorldGenerator::genRoads()
 {
 	int numRoads = (int)citySize / 3;
