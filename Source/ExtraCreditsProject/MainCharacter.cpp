@@ -29,6 +29,8 @@ AMainCharacter::AMainCharacter()
 	MainCamera->SetupAttachment(MainCameraSpringArm, USpringArmComponent::SocketName);
 	MainCamera->bUsePawnControlRotation = false;
 
+	playerModule = CreateDefaultSubobject<UPlayerWifiModule>(TEXT("PlayerWifi"));
+
 	//Take control of the default Player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }

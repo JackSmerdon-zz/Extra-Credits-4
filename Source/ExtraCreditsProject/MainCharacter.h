@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Public/PlayerWifiModule.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -17,13 +18,15 @@ public:
 
 protected:
 	//camera prototype
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 		class UCameraComponent* MainCamera;
 
 	//camera boomarm prototype
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Camera")
 		class USpringArmComponent* MainCameraSpringArm;
 
+	UPROPERTY(EditAnywhere, Category = "Wifi")
+		class UPlayerWifiModule * playerModule;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

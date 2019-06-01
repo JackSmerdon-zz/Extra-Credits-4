@@ -12,6 +12,12 @@ Uwifi_component::Uwifi_component()
 }
 
 
+void Uwifi_component::setMaxWifiHealth(float f)
+{
+	maxWifiHealth = f;
+	wifiHealth = f;
+}
+
 // Called when the game starts
 void Uwifi_component::BeginPlay()
 {
@@ -20,7 +26,6 @@ void Uwifi_component::BeginPlay()
 	myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 	if(myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
 	DrawDebugSphere(GetWorld(), this->GetOwner()->GetActorLocation(), wifiRange, 26, FColor(0, 255, 0), true, -1, 0, 0);
-
 }
 
 // Called every frame
@@ -30,8 +35,15 @@ void Uwifi_component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	distance = FVector::Dist(myCharacter->GetActorLocation(), this->GetOwner()->GetActorLocation());
 
-	if (distance >= wifiRange) {
-		if(player != nullptr) player->WithinWifiRange(depletion);
+	if (distance <= wifiRange) {
+		if (player != nullptr) {
+			wifiHealth -= depletion * DeltaTime;
+			if(wifiHealth > 0)
+				player->WithinWifiRange(-depletion);
+		}
+	}
+	else {
+		if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
 	}
 	// ...
 }

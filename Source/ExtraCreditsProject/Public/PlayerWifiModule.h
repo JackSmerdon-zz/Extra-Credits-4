@@ -31,11 +31,11 @@ protected:
 	bool hasWifi = false;
 
 	UPROPERTY(EditAnywhere, Category = "Points")
-	float wifiHealth = 10.0f;
+	float wifiHealth = 100.0f;
 	UPROPERTY(EditAnywhere, Category = "Points")
 	float defaultDepleteRate = 0.5f;
 	UPROPERTY(EditAnywhere, Category = "Points")
-	float currentDepleteRate = 0.1f;
+	float currentDepleteRate = 0.5f;
 
 
 public:	

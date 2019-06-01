@@ -22,17 +22,26 @@ public:
 
 	void setWifiRange(float f) { wifiRange = f; }
 	const float getWifiRange() { return wifiRange; }
+	void setDepleteRate(float f) { depletion = f; }
+	const float getDepleteRate() { return depletion; }
+	void setMaxWifiHealth(float f);
+	const float getMaxWifiHealth() { return maxWifiHealth; }
+	const float getWifiHealth() { return wifiHealth; }
 	
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 	float wifiRange = 1500.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 	class UPlayerWifiModule *player;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 	float depletion = 0.1f;
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
+	float maxWifiHealth = 100.0f;
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
+	float wifiHealth = 100.0f;
 	ACharacter* myCharacter;
 
 	float distance = 0.0f;
