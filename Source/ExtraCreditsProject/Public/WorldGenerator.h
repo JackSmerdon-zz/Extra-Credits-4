@@ -18,7 +18,6 @@ class EXTRACREDITSPROJECT_API AWorldGenerator : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AWorldGenerator();
-	AActor* SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,6 +35,15 @@ private:
 	UWorld* world;
 	static const int16 offset = 1550;
 	static const int8 percentageBuildings = 40;
-	static const int8 citySize = 15;
+	static const uint8 citySize = 45;
 	AActor* levelMap[citySize][citySize];
+
+	AActor* SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
+	void oldGenerateWorld();
+	void correctTiles();
+
+	void generateWorld();
+	void genBuildings();
+	void genRoads();
+	void genLowFreq();
 };
