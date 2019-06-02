@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "wifi_component.h"
+#include "Public/wifi_component.h"
 
 // Sets default values for this component's properties
 Uwifi_component::Uwifi_component()
@@ -24,7 +24,7 @@ void Uwifi_component::BeginPlay()
 	Super::BeginPlay();
 
 	myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	if(myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
+	//if (myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
 	DrawDebugSphere(GetWorld(), this->GetOwner()->GetActorLocation(), wifiRange, 26, FColor(0, 255, 0), true, -1, 0, 0);
 }
 
@@ -35,31 +35,30 @@ void Uwifi_component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	distance = FVector::Dist(myCharacter->GetActorLocation(), this->GetOwner()->GetActorLocation());
 
-	if (player != nullptr) {
-		if (distance <= wifiRange) {
-			wifiHealth -= depletion * DeltaTime;
-			if (wifiHealth > 0)
-				player->WithinWifiRange(-depletion);
+	//if (player != nullptr) {
+	//	if (distance <= wifiRange) {
+	//		wifiHealth -= depletion * DeltaTime;
+	//		if (wifiHealth > 0)
+	//			player->WithinWifiRange(-depletion);
 
-		}
-		else {
-			if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
-		}
+	//	}
+	//	else {
+	//		if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
+	//	}
 
-		if (distance <= player->getMaxWifiRange()) {
-			if (!isInPlayerList) {
-				player->addWifiToList(this);
-				isInPlayerList = true;
-			}
-		}
-		else {
-			if (isInPlayerList) {
-				player->removeWifiFromList(this);
-				isInPlayerList = false;
-			}
-		}
-	}
+	//	if (distance <= player->getMaxWifiRange()) {
+	//		if (!isInPlayerList) {
+	//			player->addWifiToList(this);
+	//			isInPlayerList = true;
+	//		}
+	//	}
+	//	else {
+	//		if (isInPlayerList) {
+	//			player->removeWifiFromList(this);
+	//			isInPlayerList = false;
+	//		}
+	//	}
+	//}
 
 	// ...
 }
-

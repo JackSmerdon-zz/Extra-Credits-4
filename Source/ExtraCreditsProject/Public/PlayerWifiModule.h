@@ -18,8 +18,8 @@ public:
 
 	const float getWifiHealth(){return wifiHealth;}
 	void setWifiHealth(float f) { wifiHealth = f; }
-	void addWifiToList(Uwifi_component * comp);
-	void removeWifiFromList(Uwifi_component * comp);
+	void addWifiToList(Uwifi_component* comp);
+	void removeWifiFromList(Uwifi_component* comp);
 	void WithinWifiRange(float f);
 
 	float getMaxWifiRange() { return maxWifiSignalRange; }

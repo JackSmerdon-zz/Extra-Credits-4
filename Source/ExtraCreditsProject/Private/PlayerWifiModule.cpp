@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "..\Public\PlayerWifiModule.h"
+#include "Public/PlayerWifiModule.h"
 
 // Sets default values for this component's properties
 UPlayerWifiModule::UPlayerWifiModule()
@@ -14,11 +14,11 @@ UPlayerWifiModule::UPlayerWifiModule()
 
 
 
-void UPlayerWifiModule::addWifiToList(Uwifi_component * comp)
+void UPlayerWifiModule::addWifiToList(Uwifi_component* comp)
 {
 	if (!nearbyWifiComponents.Contains(comp)) 
 	{
-		int listCount = nearbyWifiComponents.Num;
+		int listCount = nearbyWifiComponents.Num();
 		if (listCount == 0) nearbyWifiComponents.Add(comp);
 		else 
 		{
@@ -28,7 +28,7 @@ void UPlayerWifiModule::addWifiToList(Uwifi_component * comp)
 	}
 }
 
-void UPlayerWifiModule::removeWifiFromList(Uwifi_component * comp)
+void UPlayerWifiModule::removeWifiFromList(Uwifi_component* comp)
 {
 	if (nearbyWifiComponents.Contains(comp)) 
 	{
@@ -59,7 +59,7 @@ void UPlayerWifiModule::deplete(float f)
 
 void UPlayerWifiModule::sortWifiArray()
 {
-	int numberOfElements = nearbyWifiComponents.Num;
+	int numberOfElements = nearbyWifiComponents.Num();
 	if (numberOfElements > 0) {
 		for (int i = 0; i < numberOfElements; i++) {
 			for (int j = 0; j < numberOfElements - i; j++)
