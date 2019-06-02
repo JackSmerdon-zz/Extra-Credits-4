@@ -35,30 +35,30 @@ void Uwifi_component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 	distance = FVector::Dist(myCharacter->GetActorLocation(), this->GetOwner()->GetActorLocation());
 
-	//if (player != nullptr) {
-	//	if (distance <= wifiRange) {
-	//		wifiHealth -= depletion * DeltaTime;
-	//		if (wifiHealth > 0)
-	//			player->WithinWifiRange(-depletion);
+	if (player != nullptr) {
+		if (distance <= wifiRange) {
+			wifiHealth -= depletion * DeltaTime;
+			if (wifiHealth > 0)
+				player->WithinWifiRange(-depletion);
 
-	//	}
-	//	else {
-	//		if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
-	//	}
+		}
+		else {
+			if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
+		}
 
-	//	if (distance <= player->getMaxWifiRange()) {
-	//		if (!isInPlayerList) {
-	//			player->addWifiToList(this);
-	//			isInPlayerList = true;
-	//		}
-	//	}
-	//	else {
-	//		if (isInPlayerList) {
-	//			player->removeWifiFromList(this);
-	//			isInPlayerList = false;
-	//		}
-	//	}
-	//}
+		if (distance <= player->getMaxWifiRange()) {
+			if (!isInPlayerList) {
+				player->addWifiToList(this->GetOwner()->GetActorLocation());
+				isInPlayerList = true;
+			}
+		}
+		else {
+			if (isInPlayerList) {
+				player->removeWifiFromList(this->GetOwner()->GetActorLocation());
+				isInPlayerList = false;
+			}
+		}
+	}
 
 	// ...
 }

@@ -50,8 +50,8 @@ void UGameTime::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		day++;
 	}
 
-	FString timeString = formatHours(time) + ":" + formatMins(time);
-	print(timeString);
+	//FString timeString = formatHours(time) + ":" + formatMins(time);
+	//print(timeString);
 }
 
 //allows the time to be formatted correctly

@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "wifi_component.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "PlayerWifiModule.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -18,9 +19,11 @@ public:
 
 	const float getWifiHealth(){return wifiHealth;}
 	void setWifiHealth(float f) { wifiHealth = f; }
-	void addWifiToList(Uwifi_component* comp);
-	void removeWifiFromList(Uwifi_component* comp);
+	void addWifiToList(FVector comp);
+	void removeWifiFromList(FVector comp);
 	void WithinWifiRange(float f);
+
+	float getWifiPercent() { return wifiPercentage;}
 
 	float getMaxWifiRange() { return maxWifiSignalRange; }
 
@@ -46,7 +49,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Points")
 	float maxWifiSignalRange = 10000.0f;
 
-	TArray<Uwifi_component*> nearbyWifiComponents;
+	TArray<FVector> nearbyWifiComponents;
+
+	float nearestWifiComponentDistance = 0.0f;
+
+	float wifiPercentage = 0.0f;
 
 public:	
 	// Called every frame

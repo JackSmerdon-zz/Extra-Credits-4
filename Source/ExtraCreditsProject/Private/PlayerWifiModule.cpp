@@ -1,7 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
 
 #include "Public/PlayerWifiModule.h"
-
 // Sets default values for this component's properties
 UPlayerWifiModule::UPlayerWifiModule()
 {
@@ -14,7 +13,7 @@ UPlayerWifiModule::UPlayerWifiModule()
 
 
 
-void UPlayerWifiModule::addWifiToList(Uwifi_component* comp)
+void UPlayerWifiModule::addWifiToList(FVector comp)
 {
 	if (!nearbyWifiComponents.Contains(comp)) 
 	{
@@ -28,7 +27,7 @@ void UPlayerWifiModule::addWifiToList(Uwifi_component* comp)
 	}
 }
 
-void UPlayerWifiModule::removeWifiFromList(Uwifi_component* comp)
+void UPlayerWifiModule::removeWifiFromList(FVector comp)
 {
 	if (nearbyWifiComponents.Contains(comp)) 
 	{
@@ -64,7 +63,7 @@ void UPlayerWifiModule::sortWifiArray()
 		for (int i = 0; i < numberOfElements; i++) {
 			for (int j = 0; j < numberOfElements - i; j++)
 				if(j+1 < numberOfElements)
-					if ((nearbyWifiComponents[j]->getWifiDistance() - nearbyWifiComponents[j]->getWifiHealth()) > (nearbyWifiComponents[j + 1]->getWifiDistance() - nearbyWifiComponents[j + 1]->getWifiHealth()))
+					if (FVector::Dist(nearbyWifiComponents[j], this->GetOwner()->GetActorLocation()) > FVector::Dist(nearbyWifiComponents[j + 1], this->GetOwner()->GetActorLocation()))
 						nearbyWifiComponents.Swap(j, j + 1);
 		}
 	}
@@ -87,6 +86,16 @@ void UPlayerWifiModule::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	sortWifiArray();
 	//disable bool (will be re-enabled by wifi component)
 	noWifi();
+
+	if (nearbyWifiComponents.Num() > 0) {
+		nearestWifiComponentDistance = FVector::Dist(this->GetOwner()->GetActorLocation(), nearbyWifiComponents[0]);
+
+		wifiPercentage = (nearestWifiComponentDistance / maxWifiSignalRange) * 100.0f;
+	}
+	else 
+	{
+		wifiPercentage = 0.0f;
+	}
 	// ...
 }
 

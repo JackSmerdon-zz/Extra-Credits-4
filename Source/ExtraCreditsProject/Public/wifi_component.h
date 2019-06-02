@@ -8,7 +8,7 @@
 #include "EngineUtils.h"
 #include "Classes/Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
-//#include "Public/PlayerWifiModule.h"
+#include "Public/PlayerWifiModule.h"
 #include "wifi_component.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -36,8 +36,8 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 		float wifiRange = 1500.0f;
-	//UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
-		//class UPlayerWifiModule *player;
+	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
+		class UPlayerWifiModule *player;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 		float depletion = 0.1f;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
