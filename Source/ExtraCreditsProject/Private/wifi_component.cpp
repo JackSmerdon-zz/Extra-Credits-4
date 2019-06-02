@@ -24,7 +24,7 @@ void Uwifi_component::BeginPlay()
 	Super::BeginPlay();
 
 	myCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	//if (myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
+	if (myCharacter != nullptr) player = myCharacter->FindComponentByClass<UPlayerWifiModule>();
 	DrawDebugSphere(GetWorld(), this->GetOwner()->GetActorLocation(), wifiRange, 26, FColor(0, 255, 0), true, -1, 0, 0);
 }
 
@@ -40,13 +40,13 @@ void Uwifi_component::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 			wifiHealth -= depletion * DeltaTime;
 			if (wifiHealth > 0)
 				player->WithinWifiRange(-depletion);
-
 		}
 		else {
 			if (wifiHealth < maxWifiHealth) wifiHealth += (depletion * DeltaTime) / 10;
 		}
 
-		if (distance <= player->getMaxWifiRange()) {
+		//Adds wifi point to list if it is within the players range and if it has enough health
+		if ((distance <= player->getMaxWifiRange()) && (wifiHealth > 0)) {
 			if (!isInPlayerList) {
 				player->addWifiToList(this->GetOwner()->GetActorLocation());
 				isInPlayerList = true;
