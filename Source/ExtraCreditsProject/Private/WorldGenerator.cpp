@@ -125,7 +125,7 @@ void AWorldGenerator::genRoads()
 	TArray<FVector2D> roadPoints;
 	for (int i = 0; i < numRoads; i++)
 	{
-		roadPoints.Add(FVector2D(FMath::RandRange(0, citySize), FMath::RandRange(0, citySize)));
+		roadPoints.Add(FVector2D(FMath::RandRange(1, citySize-1), FMath::RandRange(1, citySize-1)));
 	}
 
 	for (int i = 0; i < roadPoints.Num(); i++)
@@ -153,6 +153,12 @@ void AWorldGenerator::genRoads()
 			else if (current.X > goal.X) x--;
 			else if (current.Y < goal.Y) y++;
 			else if (current.Y > goal.Y) y--;
+
+			/*if (x != 0)
+			{
+
+			}*/
+
 
 			current.X += x;
 			current.Y += y;
