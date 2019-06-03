@@ -34,12 +34,32 @@ AMainCharacter::AMainCharacter()
 
 	//Take control of the default Player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	 
+
+	static ConstructorHelpers::FObjectFinder<USoundCue> footstepSoundCue(TEXT(" '/Game/Sounds/Raw/Footstep1_Cue'"));
+	FootstepCue = footstepSoundCue.Object;
+
+	FootstepAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("FootstepComp"));
+	FootstepAudioComponent->bAutoActivate = false;
+	FootstepAudioComponent->AutoAttachParent;
 }
+
+void AMainCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if (FootstepCue->IsValidLowLevel())
+	{
+		FootstepAudioComponent->SetSound(FootstepCue);
+	}
+}
+
 
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -67,6 +87,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float Value)
 {
+	//FootstepAudioComponent->Stop();
 	if ((Controller != NULL) && (Value != 0.0f))
 	{
 		// find out which way is forward
@@ -79,7 +100,16 @@ void AMainCharacter::MoveForward(float Value)
 
 	}
 	forwardMovement = Value;
+	if (forwardMovement != 0)
+	{
+		FootstepAudioComponent->Play();
+	}
+	else
+	{
+		//FootstepAudioComponent->Stop();
+		FootstepAudioComponent->SetPaused(true);
 
+	}
 }
 
 void AMainCharacter::MoveStrafe(float Value)
@@ -98,4 +128,12 @@ void AMainCharacter::MoveStrafe(float Value)
 		
 	}
 	strafeMovement = Value;
+	if (strafeMovement != 0)
+	{
+		FootstepAudioComponent->Play();
+	}
+	else
+	{
+		FootstepAudioComponent->SetPaused(true);
+	}
 }
