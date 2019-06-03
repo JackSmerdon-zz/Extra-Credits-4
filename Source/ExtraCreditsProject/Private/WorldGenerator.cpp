@@ -31,8 +31,8 @@ void AWorldGenerator::Tick(float DeltaTime)
 void AWorldGenerator::generateWorld()
 {
 	genBuildings();
-	genRoads();
 	genParks();
+	genRoads();
 	genLowFreq();
 }
 
@@ -61,18 +61,31 @@ void AWorldGenerator::genBuildings()
 
 void AWorldGenerator::genParks()
 {
-	int numParks = 10;
+	int numParks = 5;
 	TArray<FVector2D> parkOrigins;
 
 	for (int i = 0; i < numParks; i++)
 	{
 		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		while(tooClose(parkOrigins, newPoint, 6, parkOrigins.Num()))
+			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
 		parkOrigins.Add(newPoint);
 	}
 
 	for (int i = 0; i < parkOrigins.Num(); i++)
 	{
-		replace(parkOrigins[i], 2, 0);
+		for (int x = parkOrigins[i].X - FMath::RandRange(3, 5); x < parkOrigins[i].X + FMath::RandRange(3, 5); x++)
+		{
+			for (int y = parkOrigins[i].Y - FMath::RandRange(3, 5); y < parkOrigins[i].Y + FMath::RandRange(3, 5); y++)
+			{
+				if (x < 0 || x > citySize - 1 || y < 0 || y > citySize - 1)
+					continue;
+				replace(FVector2D(x,y), 2, FMath::RandRange(0, Parks.Num() - 1), FMath::RandRange(0, 4));
+				int nextLine = FMath::RandRange(0, 100);
+				if (nextLine > 95)
+					break;
+			}
+		}
 	}
 }
 
@@ -86,11 +99,11 @@ bool AWorldGenerator::tooClose(TArray<FVector2D>& points, FVector2D vec, int bou
 	return false;
 }
 
-void AWorldGenerator::replace(FVector2D vec, int tileType, int tileVariant)
+void AWorldGenerator::replace(FVector2D vec, int tileType, int tileVariant, int angle)
 {
 	FVector pos = levelMap[(int)vec.X][(int)vec.Y]->GetActorLocation();
 	levelMap[(int)vec.X][(int)vec.Y]->Destroy();
-	levelMap[(int)vec.X][(int)vec.Y] = SpawnTile(tileType, tileVariant, pos, FRotator(0, 0, 0));
+	levelMap[(int)vec.X][(int)vec.Y] = SpawnTile(tileType, tileVariant, pos, FRotator(0, 90 * angle, 0));
 }
 
 void AWorldGenerator::genRoads()
@@ -166,7 +179,41 @@ void AWorldGenerator::genRoads()
 
 void AWorldGenerator::genLowFreq()
 {
+	for (int i = 0; i < citySize/5; i++)
+	{
+		bool valid = false;
+		FVector2D newPoint;
+		while (!valid)
+		{
+			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+			if (!levelMap[(int)newPoint.X][(int)newPoint.Y]->ActorHasTag("Road"))
+			{
+				for (int x = newPoint.X - 1; x < newPoint.X + 1; x++)
+				{
+					for (int y = newPoint.Y - 1; y < newPoint.Y + 1; y++)
+					{
+						if (x < 0 || x > citySize - 1 || y < 0 || y > citySize - 1)
+							continue;
 
+						if (levelMap[x][y]->ActorHasTag("Road"))
+							valid = true;
+					}
+				}
+			}
+		}
+		replace(newPoint, 0, 7, FMath::RandRange(0, 4));
+	}
+
+	TArray<FVector2D> cafes;
+	for (int i = 0; i < internetCafeCount; i++)
+	{
+		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		while (tooClose(cafes, newPoint, 2, cafes.Num()))
+			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		cafes.Add(newPoint);
+	}
+	for(int i = 0; i < cafes.Num(); i++)
+		replace(cafes[i], 3, 0, FMath::RandRange(0, 4));
 }
 
 
@@ -229,7 +276,10 @@ void AWorldGenerator::removeThickRoads()
 
 			if (current && right && down && diag)
 			{
-				replace(FVector2D(x + 1, y + 1), 3, 0);
+				int8 variant = FMath::RandRange(1, Buildings.Num() - 1);
+				int angle = FMath::RandRange(0, 4);
+
+				replace(FVector2D(x + 1, y + 1), 1, variant, angle);
 			}
 		}
 	}
@@ -247,6 +297,10 @@ void AWorldGenerator::correctTiles()
 				if (!levelMap[x][y]->ActorHasTag("Road"))
 				{
 					//print("Skipping Building..");
+					continue;
+				}
+				if (levelMap[x][y]->ActorHasTag("Petrol Station"))
+				{
 					continue;
 				}
 				else

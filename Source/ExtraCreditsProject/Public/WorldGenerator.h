@@ -39,11 +39,14 @@ public:
 		uint8 getCitySize() { return citySize; };
 	UFUNCTION(BlueprintCallable, Category = "World Generation")
 		int32 getOffset() { return offset; };
+	UFUNCTION(BlueprintCallable, Category = "World Generation")
+		void setCafeCount(uint8 cafeCount) { internetCafeCount = cafeCount; };
 
 private:
 	UWorld* world;
 	static const int16 offset = 1550;
 	static const uint8 citySize = 45;
+	uint8 internetCafeCount = 15;
 	AActor* levelMap[citySize][citySize];
 
 	AActor* SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
@@ -57,5 +60,5 @@ private:
 	void genLowFreq();
 
 	bool tooClose(TArray<FVector2D>& points, FVector2D vec, int boundary, int8 numPoints);
-	void replace(FVector2D vec, int tileType, int tileVariant);
+	void replace(FVector2D vec, int tileType, int tileVariant, int angle = 0);
 };
