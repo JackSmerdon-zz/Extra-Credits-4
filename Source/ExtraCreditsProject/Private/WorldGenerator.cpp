@@ -107,6 +107,8 @@ void AWorldGenerator::genBuildings()
 
 void AWorldGenerator::genParks()
 {
+	int numParks = citySize / 10;
+
 
 }
 

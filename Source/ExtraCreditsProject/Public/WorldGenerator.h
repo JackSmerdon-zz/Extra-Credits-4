@@ -35,6 +35,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable, Category = "World Generation")
+		uint8 getCitySize() { return citySize; };
+	UFUNCTION(BlueprintCallable, Category = "World Generation")
+		int16 getOffset() { return offset; };
 
 private:
 	UWorld* world;
