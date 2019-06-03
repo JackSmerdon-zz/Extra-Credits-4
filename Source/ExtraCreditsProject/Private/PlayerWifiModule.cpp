@@ -90,7 +90,7 @@ void UPlayerWifiModule::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	if (nearbyWifiComponents.Num() > 0) {
 		nearestWifiComponentDistance = FVector::Dist(this->GetOwner()->GetActorLocation(), nearbyWifiComponents[0]);
 
-		wifiPercentage = (nearestWifiComponentDistance / maxWifiSignalRange) * 100.0f;
+		wifiPercentage = nearestWifiComponentDistance / maxWifiSignalRange;
 	}
 	else 
 	{

@@ -95,3 +95,8 @@ FString UGameTime::formatHours(int currentTime)
 
 	return newTime;
 }
+
+FString UGameTime::GetFormattedTime()
+{
+	return formatHours(time) + ":" + formatMins(time);
+}

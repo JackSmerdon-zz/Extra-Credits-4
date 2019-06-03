@@ -23,6 +23,7 @@ public:
 	void removeWifiFromList(FVector comp);
 	void WithinWifiRange(float f);
 
+	UFUNCTION(BlueprintPure, Category = "WIFI Percent")
 	float getWifiPercent() { return wifiPercentage;}
 
 	float getMaxWifiRange() { return maxWifiSignalRange; }

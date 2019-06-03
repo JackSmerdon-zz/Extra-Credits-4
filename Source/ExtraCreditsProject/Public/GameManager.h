@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "Engine.h"
 #include "CoreMinimal.h"
+#include "Engine/Engine.h"
 #include "GameFramework/Actor.h"
 #include "GameManager.generated.h"
 
@@ -24,11 +24,13 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "GameTime")
+	UPROPERTY(EditAnywhere, Category = "Game Time")
 		class UGameTime *gameTime;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Game Time")
+	FORCEINLINE class UGameTime* getGameTime() const { return gameTime; }
 };

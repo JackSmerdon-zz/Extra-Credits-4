@@ -14,6 +14,15 @@ class AExtraCreditsProjectGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	public:
-		AExtraCreditsProjectGameModeBase();
+	virtual void BeginPlay() override; //override begin play from the base class
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Time", Meta = (BlueprintProtected = "True"))
+	TSubclassOf<class UUserWidget> PlayerHUDClass;
+
+	UPROPERTY()
+	class UUserWidget* CurrentWidget;
+
+public:
+	AExtraCreditsProjectGameModeBase();
 };

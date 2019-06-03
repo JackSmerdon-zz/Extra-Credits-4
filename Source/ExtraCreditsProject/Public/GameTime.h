@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Engine.h"
+#include "Engine/Engine.h"
+#include "Components/DirectionalLightComponent.h"
 #include "GameTime.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -54,4 +55,8 @@ public:
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	//returns the time but formatted as a 24-hour clock
+	UFUNCTION(BlueprintPure, Category = "Game Time")
+	FString GetFormattedTime();
 };
