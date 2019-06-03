@@ -38,7 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "World Generation")
 		uint8 getCitySize() { return citySize; };
 	UFUNCTION(BlueprintCallable, Category = "World Generation")
-		int16 getOffset() { return offset; };
+		int32 getOffset() { return offset; };
 
 private:
 	UWorld* world;
@@ -57,4 +57,6 @@ private:
 	void genParks();
 	void genRoads();
 	void genLowFreq();
+
+	bool tooClose(TArray<FVector2D>& points, FVector2D vec, int8 boundary);
 };

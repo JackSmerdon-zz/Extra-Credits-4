@@ -108,34 +108,40 @@ void AWorldGenerator::genBuildings()
 void AWorldGenerator::genParks()
 {
 	int numParks = citySize / 10;
+	TArray<FVector2D> parkOrigins;
+
+	for (int i = 0; i < numParks; i++)
+	{
+		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		while (tooClose(parkOrigins, newPoint, 10))
+			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		parkOrigins.Add(newPoint);
+	}
 
 
 }
 
+bool AWorldGenerator::tooClose(TArray<FVector2D>& points, FVector2D vec, int8 boundary)
+{
+	for (int i = 0; i < points.Num(); i++)
+	{
+		if (abs(vec.X - points[i].X) < boundary || abs(vec.Y - points[i].Y) < boundary)
+			return true;
+	}
+	return false;
+}
+
 void AWorldGenerator::genRoads()
 {
-	//Safeguard for while loop
-	int maxRoads = 100;
-
 	int numRoads = (int)citySize / 3;
 	TArray<FVector2D> roadPoints;
 	uint8 centre = (citySize - 1) / 2;
 	roadPoints.Add(FVector2D(centre, centre));
 
-	auto tooClose = [=](FVector2D vec)
-	{
-		for (int i = 0; i < roadPoints.Num(); i++)
-		{
-			if (abs(vec.X - roadPoints[i].X) < 5 || abs(vec.Y - roadPoints[i].Y) < 5)
-				return true;
-		}
-		return false;
-	};
-
 	for (int i = 0; i < numRoads; i++)
 	{
 		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
-		while(tooClose(newPoint))
+		while (tooClose(roadPoints, newPoint, 5))
 			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
 		roadPoints.Add(newPoint);
 	}
