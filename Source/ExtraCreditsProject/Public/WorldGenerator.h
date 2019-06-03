@@ -29,6 +29,8 @@ protected:
 		TArray<TSubclassOf<AActor>> Buildings;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<TSubclassOf<AActor>> Parks;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<AActor>> Infrequent;
 
 public:	
 	// Called every frame
@@ -43,6 +45,7 @@ private:
 
 	AActor* SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
 	void oldGenerateWorld();
+	void removeThickRoads();
 	void correctTiles();
 
 	void generateWorld();

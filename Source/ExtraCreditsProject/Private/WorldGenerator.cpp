@@ -8,7 +8,7 @@
 // Sets default values
 AWorldGenerator::AWorldGenerator()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
@@ -36,41 +36,41 @@ void AWorldGenerator::oldGenerateWorld()
 		{
 			uint8 centre = (citySize - 1) / 2;
 			//Prevents spawning on fountain block
-			if (x == centre && y == centre)
+			/*if (x == centre && y == centre)
 			{
 				levelMap[x][y] = SpawnTile(1, 0, FVector(0, 0, 0), FRotator(0, 0, 0));
 				continue;
-			}
+			}*/
 
-			else
-			{
+			//else
+			//{
 				//Calculates offset based on city size so blocks spawn around the centre
-				int8 xOff = x - centre;
-				int8 yOff = y - centre;
+			int8 xOff = x - centre;
+			int8 yOff = y - centre;
 
-				//Determines road or city tile based on distribution percentage
-				int8 type = rand() % 100;
-				if (type > percentageBuildings)
-					type = 0;
-				else
-					type = 1;
+			//Determines road or city tile based on distribution percentage
+			int8 type = rand() % 100;
+			if (type > percentageBuildings)
+				type = 0;
+			else
+				type = 1;
 
-				//Determines variant across all variants of each type
-				int8 variant = 0;
-				if (type == 0)
-				{
-					//Road
-					variant = rand() % Roads.Num();
-				}
-				else if (type == 1)
-				{
-					//Building
-					variant = FMath::RandRange(1, Buildings.Num()-1);
-				}
-
-				//Populates array with generated tile
-				levelMap[x][y] = SpawnTile(type, variant, FVector(offset*xOff, offset*yOff, 0), FRotator(0, 90, 0));
+			//Determines variant across all variants of each type
+			int8 variant = 0;
+			if (type == 0)
+			{
+				//Road
+				variant = rand() % Roads.Num();
 			}
+			else if (type == 1)
+			{
+				//Building
+				variant = FMath::RandRange(1, Buildings.Num() - 1);
+			}
+
+			//Populates array with generated tile
+			levelMap[x][y] = SpawnTile(type, variant, FVector(offset*xOff, offset*yOff, 0), FRotator(0, 90, 0));
+			//}
 		}
 	}
 }
@@ -88,27 +88,19 @@ void AWorldGenerator::genBuildings()
 	{
 		for (uint8 y = 0; y < citySize; y++)
 		{
+			//Calculate centre tile
 			uint8 centre = (citySize - 1) / 2;
-			//Prevents spawning on fountain block
-			if (x == centre && y == centre)
-			{
-				levelMap[x][y] = SpawnTile(1, 0, FVector(0, 0, 0), FRotator(0, 0, 0));
-				continue;
-			}
 
-			else
-			{
-				//Calculates offset based on city size so blocks spawn around the centre
-				int8 xOff = x - centre;
-				int8 yOff = y - centre;
+			//Calculates offset based on city size so blocks spawn around the centre
+			int8 xOff = x - centre;
+			int8 yOff = y - centre;
 
-				//Determines variant across all variants of each type
-				int8 variant = FMath::RandRange(2, Buildings.Num() - 1);
-				int angle = FMath::RandRange(0, 4);
+			//Determines variant across all variants of each type
+			int8 variant = FMath::RandRange(1, Buildings.Num() - 1);
+			int angle = FMath::RandRange(0, 4);
 
-				//Populates array with generated tile
-				levelMap[x][y] = SpawnTile(1, variant, FVector(offset*xOff, offset*yOff, 0), FRotator(0, 90*angle, 0));
-			}
+			//Populates array with generated tile
+			levelMap[x][y] = SpawnTile(1, variant, FVector(offset*xOff, offset*yOff, 0), FRotator(0, 90 * angle, 0));
 		}
 	}
 }
@@ -120,12 +112,30 @@ void AWorldGenerator::genParks()
 
 void AWorldGenerator::genRoads()
 {
+	//Safeguard for while loop
+	int maxRoads = 100;
+
 	int numRoads = (int)citySize / 3;
-	//int numRoads = 2;
 	TArray<FVector2D> roadPoints;
+	uint8 centre = (citySize - 1) / 2;
+	roadPoints.Add(FVector2D(centre, centre));
+
+	auto tooClose = [=](FVector2D vec)
+	{
+		for (int i = 0; i < roadPoints.Num(); i++)
+		{
+			if (abs(vec.X - roadPoints[i].X) < 5 || abs(vec.Y - roadPoints[i].Y) < 5)
+				return true;
+		}
+		return false;
+	};
+
 	for (int i = 0; i < numRoads; i++)
 	{
-		roadPoints.Add(FVector2D(FMath::RandRange(1, citySize-1), FMath::RandRange(1, citySize-1)));
+		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		while(tooClose(newPoint))
+			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
+		roadPoints.Add(newPoint);
 	}
 
 	for (int i = 0; i < roadPoints.Num(); i++)
@@ -144,24 +154,39 @@ void AWorldGenerator::genRoads()
 		FVector2D goal = roadPoints[i + 1];
 
 		replace(current);
-	
+		bool changeDirection = false;
+
 		while (current != goal)
 		{
 			int x = 0, y = 0;
 
-			if (current.X < goal.X) x++;
-			else if (current.X > goal.X) x--;
-			else if (current.Y < goal.Y) y++;
-			else if (current.Y > goal.Y) y--;
+			int axis = FMath::RandRange(0, 100);
+			if (axis > 65) changeDirection = !changeDirection;
 
-			/*if (x != 0)
+
+			if (changeDirection)
 			{
-
-			}*/
-
+				if (current.X < goal.X) x++;
+				else if (current.X > goal.X) x--;
+				else if (current.Y < goal.Y) y++;
+				else if (current.Y > goal.Y) y--;
+			}
+			else
+			{
+				if (current.Y < goal.Y) y++;
+				else if (current.Y > goal.Y) y--;
+				else if (current.X < goal.X) x++;
+				else if (current.X > goal.X) x--;
+			}
 
 			current.X += x;
 			current.Y += y;
+
+			if (current.X > citySize - 1) current.X = citySize - 1;
+			if (current.X < 0) current.X = 0;
+			if (current.Y > citySize - 1) current.Y = citySize - 1;
+			if (current.Y < 0) current.Y = 0;
+
 			replace(current);
 		}
 	}
@@ -180,47 +205,87 @@ AActor* AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex, FVector positi
 
 	switch (tileType)
 	{
-		case 0:
-		{
-			//Road
-			tile = world->SpawnActor<ARoad>(Roads[tileIndex], position, rotation, spawnParams);
-			tile->Tags.Add(FName("Road"));
-			break;
-		}
-		case 1:
-		{
-			//Building
-			tile = world->SpawnActor<ABuilding>(Buildings[tileIndex], position, rotation, spawnParams);
-			tile->Tags.Add(FName("Building"));
-			break;
-		}
+	case 0:
+	{
+		//Road
+		tile = world->SpawnActor<ARoad>(Roads[tileIndex], position, rotation, spawnParams);
+		tile->Tags.Add(FName("Road"));
+		break;
+	}
+	case 1:
+	{
+		//Building
+		tile = world->SpawnActor<ABuilding>(Buildings[tileIndex], position, rotation, spawnParams);
+		tile->Tags.Add(FName("Building"));
+		break;
+	}
+	case 2:
+	{
+		//Park
+		tile = world->SpawnActor<APark>(Parks[tileIndex], position, rotation, spawnParams);
+		tile->Tags.Add(FName("Park"));
+		break;
+
+	}
+	case 3:
+	{
+		//Infrequent
+		tile = world->SpawnActor<ABuilding>(Infrequent[tileIndex], position, rotation, spawnParams);
+		tile->Tags.Add(FName("InFrequent"));
+		break;
+	}
 	}
 	return tile;
 }
 
+void AWorldGenerator::removeThickRoads()
+{
+	for (int x = 0; x < citySize; x++)
+	{
+		for (int y = 0; y < citySize; y++)
+		{
+			if (levelMap[x][y]->ActorHasTag("Building"))
+				continue;
+
+			if(x+1 > citySize-1 || y+1 > citySize-1)
+				continue;
+
+			bool current = levelMap[x][y]->ActorHasTag("Road");
+			bool right = levelMap[x + 1][y]->ActorHasTag("Road");
+			bool down = levelMap[x][y + 1]->ActorHasTag("Road");
+			bool diag = levelMap[x + 1][y + 1]->ActorHasTag("Road");
+
+			if (current && right && down && diag)
+			{
+				FVector pos = levelMap[x+1][y+1]->GetActorLocation();
+				levelMap[x+1][y+1]->Destroy();
+				levelMap[x+1][y+1] = SpawnTile(2, 0, pos, FRotator(0, 0, 0));
+			}
+		}
+	}
+}
+
 void AWorldGenerator::correctTiles()
 {
+	removeThickRoads();
 	for (uint8 x = 0; x < citySize; x++)
 	{
 		for (uint8 y = 0; y < citySize; y++)
 		{
 			if (levelMap[x][y] != nullptr)
 			{
-				if (levelMap[x][y]->ActorHasTag("Building"))
+				if (!levelMap[x][y]->ActorHasTag("Road"))
 				{
 					//print("Skipping Building..");
 					continue;
 				}
 				else
 				{
-					if (x == 7 && y == 7)
-						continue;
-
-					auto out_of_bounds = [] (FVector2D vec)
+					auto out_of_bounds = [](FVector2D vec)
 					{
 						bool fail = false;
 
-						if (vec.X < 0 || vec.X > citySize-1 || vec.Y < 0 || vec.Y > citySize-1)
+						if (vec.X < 0 || vec.X > citySize - 1 || vec.Y < 0 || vec.Y > citySize - 1)
 							fail = true;
 
 						return fail;
@@ -272,83 +337,83 @@ void AWorldGenerator::correctTiles()
 					levelMap[x][y]->Destroy();
 					int rot = 0;
 
-					switch(idx)
+					switch (idx)
 					{
-						case 0:
+					case 0:
+					{
+						//Help
+						break;
+					}
+					case 1:
+					{
+						//End
+
+						if (northRoad) rot = -90;
+						if (eastRoad)  rot = 180;
+						if (southRoad) rot = 90;
+						if (westRoad)  rot = 0;
+
+						levelMap[x][y] = world->SpawnActor<ARoad>(Roads[5], pos, FRotator(0, rot, 0));
+						levelMap[x][y]->Tags.Add(FName("Road"));
+						break;
+					}
+					case 2:
+					{
+						//Straight
+
+						if (northRoad && southRoad || eastRoad && westRoad)
 						{
-							//Help
-							break;
-						}
-						case 1:
-						{
-							//End
-							
-							if (northRoad) rot = -90;
-							if (eastRoad)  rot = 180;
-							if (southRoad) rot = 90;
-							if (westRoad)  rot = 0;
+							if (northRoad && southRoad) rot = 90;
+							if (eastRoad && westRoad) rot = 0;
 
-							levelMap[x][y] = world->SpawnActor<ARoad>(Roads[5], pos, FRotator(0,rot,0));
-							levelMap[x][y]->Tags.Add(FName("Road"));
-							break;
-						}
-						case 2:
-						{
-							//Straight
-
-							if (northRoad && southRoad || eastRoad && westRoad)
-							{
-								if (northRoad && southRoad) rot = 90;
-								if (eastRoad && westRoad) rot = 0;
-
-								int var = rand() % 100;
-								if (var < 50)
-									var = 0;
-								else if (var < 75)
-									var = 1;
-								else
-									var = 2;
-
-								if (var > 2)
-									var = 2;
-
-								levelMap[x][y] = world->SpawnActor<ARoad>(Roads[var], pos, FRotator(0, rot, 0));
-								levelMap[x][y]->Tags.Add(FName("Road"));
-								break;
-
-							}
-
+							int var = rand() % 100;
+							if (var < 50)
+								var = 0;
+							else if (var < 75)
+								var = 1;
 							else
-							{
-								if (northRoad && eastRoad) rot = -90;
-								if (eastRoad && southRoad) rot = 180;
-								if (southRoad && westRoad) rot = 90;
-								if (westRoad && northRoad) rot = 0;
+								var = 2;
 
-								levelMap[x][y] = world->SpawnActor<ARoad>(Roads[4], pos, FRotator(0, rot, 0));
-								levelMap[x][y]->Tags.Add(FName("Road"));
-								break;
-							}
+							if (var > 2)
+								var = 2;
+
+							levelMap[x][y] = world->SpawnActor<ARoad>(Roads[var], pos, FRotator(0, rot, 0));
+							levelMap[x][y]->Tags.Add(FName("Road"));
+							break;
+
 						}
-						case 3:
-						{
-							//T
-							if (!northRoad) rot = 0;
-							if (!eastRoad)  rot = -90;
-							if (!southRoad) rot = 180;
-							if (!westRoad)  rot = 90;
 
-							levelMap[x][y] = world->SpawnActor<ARoad>(Roads[6], pos, FRotator(0, rot, 0));
+						else
+						{
+							if (northRoad && eastRoad) rot = -90;
+							if (eastRoad && southRoad) rot = 180;
+							if (southRoad && westRoad) rot = 90;
+							if (westRoad && northRoad) rot = 0;
+
+							levelMap[x][y] = world->SpawnActor<ARoad>(Roads[4], pos, FRotator(0, rot, 0));
 							levelMap[x][y]->Tags.Add(FName("Road"));
 							break;
 						}
-						case 4:
-						{
-							//Cross
-							levelMap[x][y] = world->SpawnActor<ARoad>(Roads[3], pos, FRotator(0, 0, 0));
-							levelMap[x][y]->Tags.Add(FName("Road"));
-							break;
-						}
+					}
+					case 3:
+					{
+						//T
+						if (!northRoad) rot = 0;
+						if (!eastRoad)  rot = -90;
+						if (!southRoad) rot = 180;
+						if (!westRoad)  rot = 90;
+
+						levelMap[x][y] = world->SpawnActor<ARoad>(Roads[6], pos, FRotator(0, rot, 0));
+						levelMap[x][y]->Tags.Add(FName("Road"));
+						break;
+					}
+					case 4:
+					{
+						//Cross
+						levelMap[x][y] = world->SpawnActor<ARoad>(Roads[3], pos, FRotator(0, 0, 0));
+						levelMap[x][y]->Tags.Add(FName("Road"));
+						break;
+					}
 					}
 				}
 			}

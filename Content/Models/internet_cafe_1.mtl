@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 02.06.2019 18:38:06
+# File Created: 03.06.2019 00:02:51
 
 newmtl palette
 	Ns 30.0000
@@ -12,5 +12,5 @@ newmtl palette
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka G:\UE4 Projects\Extra Credits\Extra-Credits-4\Content\Models\internet_cafe_1.png
-	map_Kd G:\UE4 Projects\Extra Credits\Extra-Credits-4\Content\Models\internet_cafe_1.png
+	map_Ka E:\GitHub\Extra-Credits--4\Content\Models\internet_cafe_1.png
+	map_Kd E:\GitHub\Extra-Credits--4\Content\Models\internet_cafe_1.png
