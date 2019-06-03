@@ -9,12 +9,13 @@
 #include "GameFramework/InputSettings.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
@@ -45,6 +46,13 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+		FVector target;
+		target.X = forwardMovement;
+		target.Y = strafeMovement;
+		target += this->GetActorLocation();
+		FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
+		SetActorRotation(PlayerRot, ETeleportType::None);
+
 }
 
 // Called to bind functionality to input
@@ -68,7 +76,10 @@ void AMainCharacter::MoveForward(float Value)
 		// get forward vector
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
+
 	}
+	forwardMovement = Value;
+
 }
 
 void AMainCharacter::MoveStrafe(float Value)
@@ -83,5 +94,8 @@ void AMainCharacter::MoveStrafe(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
+
+		
 	}
+	strafeMovement = Value;
 }
