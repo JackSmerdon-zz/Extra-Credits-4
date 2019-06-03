@@ -43,12 +43,10 @@ public:
 private:
 	UWorld* world;
 	static const int16 offset = 1550;
-	static const int8 percentageBuildings = 40;
 	static const uint8 citySize = 45;
 	AActor* levelMap[citySize][citySize];
 
 	AActor* SpawnTile(int8 tileType, int8 tileIndex, FVector position, FRotator rotation);
-	void oldGenerateWorld();
 	void removeThickRoads();
 	void correctTiles();
 
@@ -58,5 +56,6 @@ private:
 	void genRoads();
 	void genLowFreq();
 
-	bool tooClose(TArray<FVector2D>& points, FVector2D vec, int8 boundary);
+	bool tooClose(TArray<FVector2D>& points, FVector2D vec, int boundary, int8 numPoints);
+	void replace(FVector2D vec, int tileType, int tileVariant);
 };

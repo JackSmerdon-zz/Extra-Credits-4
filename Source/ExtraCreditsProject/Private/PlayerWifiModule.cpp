@@ -81,7 +81,7 @@ void UPlayerWifiModule::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	//depleate wifi health
+	//deplete wifi health
 	deplete(DeltaTime);
 	sortWifiArray();
 	//disable bool (will be re-enabled by wifi component)
@@ -90,7 +90,7 @@ void UPlayerWifiModule::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	if (nearbyWifiComponents.Num() > 0) {
 		nearestWifiComponentDistance = FVector::Dist(this->GetOwner()->GetActorLocation(), nearbyWifiComponents[0]);
 
-		wifiPercentage = nearestWifiComponentDistance / maxWifiSignalRange;
+		wifiPercentage = 1 - (nearestWifiComponentDistance / maxWifiSignalRange);
 	}
 	else 
 	{

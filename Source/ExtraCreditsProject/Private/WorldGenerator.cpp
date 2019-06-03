@@ -28,57 +28,11 @@ void AWorldGenerator::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AWorldGenerator::oldGenerateWorld()
-{
-	for (uint8 x = 0; x < citySize; x++)
-	{
-		for (uint8 y = 0; y < citySize; y++)
-		{
-			uint8 centre = (citySize - 1) / 2;
-			//Prevents spawning on fountain block
-			/*if (x == centre && y == centre)
-			{
-				levelMap[x][y] = SpawnTile(1, 0, FVector(0, 0, 0), FRotator(0, 0, 0));
-				continue;
-			}*/
-
-			//else
-			//{
-				//Calculates offset based on city size so blocks spawn around the centre
-			int8 xOff = x - centre;
-			int8 yOff = y - centre;
-
-			//Determines road or city tile based on distribution percentage
-			int8 type = rand() % 100;
-			if (type > percentageBuildings)
-				type = 0;
-			else
-				type = 1;
-
-			//Determines variant across all variants of each type
-			int8 variant = 0;
-			if (type == 0)
-			{
-				//Road
-				variant = rand() % Roads.Num();
-			}
-			else if (type == 1)
-			{
-				//Building
-				variant = FMath::RandRange(1, Buildings.Num() - 1);
-			}
-
-			//Populates array with generated tile
-			levelMap[x][y] = SpawnTile(type, variant, FVector(offset*xOff, offset*yOff, 0), FRotator(0, 90, 0));
-			//}
-		}
-	}
-}
-
 void AWorldGenerator::generateWorld()
 {
 	genBuildings();
 	genRoads();
+	genParks();
 	genLowFreq();
 }
 
@@ -107,23 +61,24 @@ void AWorldGenerator::genBuildings()
 
 void AWorldGenerator::genParks()
 {
-	int numParks = citySize / 10;
+	int numParks = 10;
 	TArray<FVector2D> parkOrigins;
 
 	for (int i = 0; i < numParks; i++)
 	{
 		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
-		while (tooClose(parkOrigins, newPoint, 10))
-			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
 		parkOrigins.Add(newPoint);
 	}
 
-
+	for (int i = 0; i < parkOrigins.Num(); i++)
+	{
+		replace(parkOrigins[i], 2, 0);
+	}
 }
 
-bool AWorldGenerator::tooClose(TArray<FVector2D>& points, FVector2D vec, int8 boundary)
+bool AWorldGenerator::tooClose(TArray<FVector2D>& points, FVector2D vec, int boundary, int8 numPoints)
 {
-	for (int i = 0; i < points.Num(); i++)
+	for (int i = 0; i < numPoints; i++)
 	{
 		if (abs(vec.X - points[i].X) < boundary || abs(vec.Y - points[i].Y) < boundary)
 			return true;
@@ -131,43 +86,51 @@ bool AWorldGenerator::tooClose(TArray<FVector2D>& points, FVector2D vec, int8 bo
 	return false;
 }
 
+void AWorldGenerator::replace(FVector2D vec, int tileType, int tileVariant)
+{
+	FVector pos = levelMap[(int)vec.X][(int)vec.Y]->GetActorLocation();
+	levelMap[(int)vec.X][(int)vec.Y]->Destroy();
+	levelMap[(int)vec.X][(int)vec.Y] = SpawnTile(tileType, tileVariant, pos, FRotator(0, 0, 0));
+}
+
 void AWorldGenerator::genRoads()
 {
-	int numRoads = (int)citySize / 3;
 	TArray<FVector2D> roadPoints;
+
+	//Calculate how many roads to make
+	int numRoads = citySize / 2;
+
+	//Calculate centre point
 	uint8 centre = (citySize - 1) / 2;
+
+	//Add centre as start for first road
 	roadPoints.Add(FVector2D(centre, centre));
 
 	for (int i = 0; i < numRoads; i++)
 	{
+		//Generate a new point somewhere within the city grid
 		FVector2D newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
-		while (tooClose(roadPoints, newPoint, 5))
-			newPoint = FVector2D(FMath::RandRange(1, citySize - 1), FMath::RandRange(1, citySize - 1));
 		roadPoints.Add(newPoint);
 	}
 
 	for (int i = 0; i < roadPoints.Num(); i++)
 	{
+		//There is nowhere for the last point to link to, so it is omitted
 		if (i == roadPoints.Num() - 1)
 			continue;
 
-		auto replace = [&](FVector2D vec)
-		{
-			FVector pos = levelMap[(int)vec.X][(int)vec.Y]->GetActorLocation();
-			levelMap[(int)vec.X][(int)vec.Y]->Destroy();
-			levelMap[(int)vec.X][(int)vec.Y] = SpawnTile(0, 0, pos, FRotator(0, 0, 0));
-		};
-
+		//Road is generated between the current point and the next point in the array
 		FVector2D current = roadPoints[i];
 		FVector2D goal = roadPoints[i + 1];
 
-		replace(current);
+		replace(current, 0, 0);
 		bool changeDirection = false;
 
 		while (current != goal)
 		{
 			int x = 0, y = 0;
 
+			//35% chance to change direction - stops the roads from being completely straight
 			int axis = FMath::RandRange(0, 100);
 			if (axis > 65) changeDirection = !changeDirection;
 
@@ -190,12 +153,13 @@ void AWorldGenerator::genRoads()
 			current.X += x;
 			current.Y += y;
 
+			//Bounds checking
 			if (current.X > citySize - 1) current.X = citySize - 1;
 			if (current.X < 0) current.X = 0;
 			if (current.Y > citySize - 1) current.Y = citySize - 1;
 			if (current.Y < 0) current.Y = 0;
 
-			replace(current);
+			replace(current, 0, 0);
 		}
 	}
 }
@@ -239,7 +203,7 @@ AActor* AWorldGenerator::SpawnTile(int8 tileType, int8 tileIndex, FVector positi
 	{
 		//Infrequent
 		tile = world->SpawnActor<ABuilding>(Infrequent[tileIndex], position, rotation, spawnParams);
-		tile->Tags.Add(FName("InFrequent"));
+		tile->Tags.Add(FName("Infrequent"));
 		break;
 	}
 	}
@@ -252,7 +216,7 @@ void AWorldGenerator::removeThickRoads()
 	{
 		for (int y = 0; y < citySize; y++)
 		{
-			if (levelMap[x][y]->ActorHasTag("Building"))
+			if (!levelMap[x][y]->ActorHasTag("Road"))
 				continue;
 
 			if(x+1 > citySize-1 || y+1 > citySize-1)
@@ -265,9 +229,7 @@ void AWorldGenerator::removeThickRoads()
 
 			if (current && right && down && diag)
 			{
-				FVector pos = levelMap[x+1][y+1]->GetActorLocation();
-				levelMap[x+1][y+1]->Destroy();
-				levelMap[x+1][y+1] = SpawnTile(2, 0, pos, FRotator(0, 0, 0));
+				replace(FVector2D(x + 1, y + 1), 3, 0);
 			}
 		}
 	}
