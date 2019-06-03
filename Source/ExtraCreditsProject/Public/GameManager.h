@@ -27,10 +27,16 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Game Time")
 		class UGameTime *gameTime;
 
+	UPROPERTY(EditAnywhere, Category = "Manage Downloads")
+		class UManageDownloads *manageDownloads;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Game Time")
 	FORCEINLINE class UGameTime* getGameTime() const { return gameTime; }
+
+	UFUNCTION(BlueprintCallable, Category = "Downloads")
+	FORCEINLINE class UManageDownloads* getManageDownloads() const { return manageDownloads; }
 };
