@@ -28,6 +28,8 @@ protected:
 	float GTime = 0.0f;
 	bool XMoving = false;
 	bool YMoving = false;
+	bool Sprinting = false;
+
 
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")
@@ -52,7 +54,10 @@ protected:
 	void StopSprint();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
-		USoundCue* FootstepCue;
+		USoundCue* FootstepSlowCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* FootstepFastCue;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
 		UAudioComponent* FootstepAudioComponent;

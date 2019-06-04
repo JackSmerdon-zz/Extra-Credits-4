@@ -37,9 +37,10 @@ AMainCharacter::AMainCharacter()
 	//Set default walking speed
 	defaultWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
 
-	static ConstructorHelpers::FObjectFinder<USoundCue> footstepSoundCue(TEXT(" '/Game/Sounds/Raw/Footstep1_Cue'"));
-	FootstepCue = footstepSoundCue.Object;
-
+	ConstructorHelpers::FObjectFinder<USoundCue> footstepSlowSoundCue(TEXT(" '/Game/Sounds/Raw/FootstepSlow_Cue'"));
+	ConstructorHelpers::FObjectFinder<USoundCue> footstepFastSoundCue(TEXT(" '/Game/Sounds/Raw/FootstepFast_Cue'"));
+	FootstepSlowCue = footstepSlowSoundCue.Object;
+	FootstepFastCue = footstepFastSoundCue.Object;
 	FootstepAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("FootstepComp"));
 	FootstepAudioComponent->bAutoActivate = false;
 	FootstepAudioComponent->AutoAttachParent;
@@ -48,9 +49,9 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	if (FootstepCue->IsValidLowLevel())
+	if (FootstepSlowCue->IsValidLowLevel())
 	{
-		FootstepAudioComponent->SetSound(FootstepCue);
+		FootstepAudioComponent->SetSound(FootstepSlowCue);
 	}
 }
 
@@ -67,6 +68,7 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	FVector target;
 	target.X = forwardMovement;
 	target.Y = strafeMovement;
@@ -74,12 +76,14 @@ void AMainCharacter::Tick(float DeltaTime)
 	FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
 	SetActorRotation(PlayerRot, ETeleportType::None);
 
-		if (XMoving)
-			FootstepAudioComponent->SetPaused(false);
-		else if (YMoving)
-			FootstepAudioComponent->SetPaused(false);
-		else
-			FootstepAudioComponent->SetPaused(true);
+	if (XMoving)
+		FootstepAudioComponent->SetPaused(false);
+	else if (YMoving)
+		FootstepAudioComponent->SetPaused(false);
+	else
+		FootstepAudioComponent->SetPaused(true);
+
+
 }
 
 // Called to bind functionality to input
@@ -142,9 +146,11 @@ void AMainCharacter::MoveStrafe(float Value)
 void AMainCharacter::StartSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = defaultWalkingSpeed * sprintVal;
+	FootstepAudioComponent->SetSound(FootstepFastCue);
 }
 
 void AMainCharacter::StopSprint()
 {
 	GetCharacterMovement()->MaxWalkSpeed = defaultWalkingSpeed;
+	FootstepAudioComponent->SetSound(FootstepSlowCue);
 }
