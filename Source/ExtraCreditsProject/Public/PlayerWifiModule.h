@@ -28,6 +28,8 @@ public:
 
 	float getMaxWifiRange() { return maxWifiSignalRange; }
 
+	float getCurrentDepleteRate() { return currentDepleteRate; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -43,9 +45,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Points")
 	float wifiHealth = 100.0f;
 	UPROPERTY(EditAnywhere, Category = "Points")
-	float defaultDepleteRate = 0.5f;
+	float defaultDepleteRate = 0.03f;
 	UPROPERTY(EditAnywhere, Category = "Points")
-	float currentDepleteRate = 0.5f;
+	float currentDepleteRate = 0.03f;
 
 	UPROPERTY(EditAnywhere, Category = "Points")
 	float maxWifiSignalRange = 10000.0f;

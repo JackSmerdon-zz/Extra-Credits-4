@@ -39,11 +39,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
 		class UPlayerWifiModule *player;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
-		float depletion = 0.1f;
+		float depletion = 0.2f;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
-		float maxWifiHealth = 100.0f;
+		float maxWifiHealth = 1.0f;
 	UPROPERTY(EditAnywhere, Category = "WIFI MODULE")
-		float wifiHealth = 100.0f;
+		float wifiHealth = 1.0f;
 	ACharacter* myCharacter;
 
 	bool isInPlayerList = false;

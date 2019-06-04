@@ -38,6 +38,10 @@ void UManageDownloads::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	{
 		currentDownloadSpeed = maxDownloadSpeed * wifiComponent->getWifiPercent();
 		downloadPercent += (currentDownloadSpeed / (1.0f / maxDownloadSpeed)) * DeltaTime;
+
+
+		//currentDownloadSpeed = maxDownloadSpeed * wifiComponent->getWifiPercent();
+		//downloadPercent += (currentDownloadSpeed / (1.0f / maxDownloadSpeed)) * DeltaTime;
 	}
 
 	//download has finished
@@ -45,12 +49,14 @@ void UManageDownloads::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	{
 		numOfFilesDownloaded++;
 		downloadPercent = 0.0f;
+
+		timeRemaining += 10;
 	}
 
 	//if the player has run out of time...
 	if (timeRemaining == 0)
 	{
-
+		UGameplayStatics::OpenLevel(GetWorld(), "MainMenu");
 	}
 }
 

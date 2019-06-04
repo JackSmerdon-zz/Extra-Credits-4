@@ -33,7 +33,7 @@ protected:
 
 	//the time remaining in the game
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Downloads")
-	int32 timeRemaining = 30;
+	int32 timeRemaining = 60;
 
 	//minium signal strength to start downloading
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Downloads")
