@@ -26,6 +26,8 @@ protected:
 	float defaultWalkingSpeed = 0.0f;
 	float sprintVal = 5.0f;
 	float GTime = 0.0f;
+	bool XMoving = false;
+	bool YMoving = false;
 
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")

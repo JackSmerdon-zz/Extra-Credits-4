@@ -59,6 +59,7 @@ void AMainCharacter::PostInitializeComponents()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	FootstepAudioComponent->Play();
 
 }
 
@@ -73,7 +74,12 @@ void AMainCharacter::Tick(float DeltaTime)
 	FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
 	SetActorRotation(PlayerRot, ETeleportType::None);
 
-		GTime += DeltaTime;
+		if (XMoving)
+			FootstepAudioComponent->SetPaused(false);
+		else if (YMoving)
+			FootstepAudioComponent->SetPaused(false);
+		else
+			FootstepAudioComponent->SetPaused(true);
 }
 
 // Called to bind functionality to input
@@ -103,19 +109,12 @@ void AMainCharacter::MoveForward(float Value)
 
 	}
 	forwardMovement = Value;
-	if (forwardMovement != 0)
-	{
-		if (GTime >= 1.0f)
-		{
-			FootstepAudioComponent->Play();
-			GTime = 0.0f;
-		}
-	}
+	if (Value >= 1.f)
+		YMoving = true;
+	else if (Value <= -1.f)
+		YMoving = true;
 	else
-	{
-		//FootstepAudioComponent->Stop();
-		FootstepAudioComponent->SetPaused(true);
-	}
+		YMoving = false;
 }
 
 void AMainCharacter::MoveStrafe(float Value)
@@ -130,10 +129,14 @@ void AMainCharacter::MoveStrafe(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
-
-
 	}
 	strafeMovement = Value;
+	if (Value >= 0.1f)
+		XMoving = true;
+	else if (Value <= -0.1f)
+		XMoving = true;
+	else
+		XMoving = false;
 }
 
 void AMainCharacter::StartSprint()
