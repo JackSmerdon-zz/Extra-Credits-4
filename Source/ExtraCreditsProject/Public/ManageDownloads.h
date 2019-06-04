@@ -50,7 +50,7 @@ public:
 	FORCEINLINE int32 getTimeRemaining() const { return timeRemaining; }
 
 	UFUNCTION(BlueprintPure, Category = "Downloads")
-	FORCEINLINE FString getDownloadPercentAsFormattedText() const { return FString(FString::FromInt(downloadPercent * 100) + "%"); }
+	FString getDownloadPercentAsFormattedText();
 
 	UFUNCTION(BlueprintPure, Category = "Downloads")
 	FORCEINLINE float getDownloadPercent() const { return downloadPercent; }
