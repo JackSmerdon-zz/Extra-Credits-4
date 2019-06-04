@@ -73,6 +73,7 @@ void AMainCharacter::Tick(float DeltaTime)
 		FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
 		SetActorRotation(PlayerRot, ETeleportType::None);
 
+		GTime += DeltaTime;
 }
 
 // Called to bind functionality to input
@@ -102,13 +103,16 @@ void AMainCharacter::MoveForward(float Value)
 	forwardMovement = Value;
 	if (forwardMovement != 0)
 	{
-		FootstepAudioComponent->Play();
+		if (GTime >= 1.0f)
+		{
+			FootstepAudioComponent->Play();
+			GTime = 0.0f;
+		}
 	}
 	else
 	{
 		//FootstepAudioComponent->Stop();
 		FootstepAudioComponent->SetPaused(true);
-
 	}
 }
 
@@ -130,7 +134,11 @@ void AMainCharacter::MoveStrafe(float Value)
 	strafeMovement = Value;
 	if (strafeMovement != 0)
 	{
-		FootstepAudioComponent->Play();
+		if (GTime >= 1.0f)
+		{
+			FootstepAudioComponent->Play();
+			GTime = 0.0f;
+		}
 	}
 	else
 	{

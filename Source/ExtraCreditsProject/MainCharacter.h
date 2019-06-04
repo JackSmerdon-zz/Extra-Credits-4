@@ -23,7 +23,7 @@ protected:
 
 	float forwardMovement = 0.0f;
 	float strafeMovement = 0.0f;
-
+	float GTime = 0.0f;
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")
 		class UCameraComponent* MainCamera;
