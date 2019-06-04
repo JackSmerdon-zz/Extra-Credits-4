@@ -23,7 +23,10 @@ protected:
 
 	float forwardMovement = 0.0f;
 	float strafeMovement = 0.0f;
+	float defaultWalkingSpeed = 0.0f;
+	float sprintVal = 5.0f;
 	float GTime = 0.0f;
+
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")
 		class UCameraComponent* MainCamera;
@@ -40,8 +43,11 @@ protected:
 	//handles moving forward and back
 	void MoveForward(float Val);
 
-	//hadles strafing left and right
+	//handles strafing left and right
 	void MoveStrafe(float Val);
+
+	void StartSprint();
+	void StopSprint();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
 		USoundCue* FootstepCue;
@@ -49,7 +55,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Audio")
 		UAudioComponent* FootstepAudioComponent;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
