@@ -34,8 +34,11 @@ void UManageDownloads::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	}
 
 	//update the current download percent of the files
-	currentDownloadSpeed = maxDownloadSpeed * wifiComponent->getWifiPercent();
-	downloadPercent += (currentDownloadSpeed / (1.0f / maxDownloadSpeed)) * DeltaTime;
+	if (wifiComponent->getWifiPercent() > minDownloadStrength)
+	{
+		currentDownloadSpeed = maxDownloadSpeed * wifiComponent->getWifiPercent();
+		downloadPercent += (currentDownloadSpeed / (1.0f / maxDownloadSpeed)) * DeltaTime;
+	}
 
 	//download has finished
 	if (downloadPercent >= 1.0f)

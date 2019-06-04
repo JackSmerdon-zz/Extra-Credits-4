@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Public/PlayerWifiModule.h"
+#include "ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Engine/Classes/Sound/SoundCue.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -22,6 +25,7 @@ protected:
 	float strafeMovement = 0.0f;
 	float defaultWalkingSpeed = 0.0f;
 	float sprintVal = 5.0f;
+	float GTime = 0.0f;
 
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")
@@ -45,12 +49,20 @@ protected:
 	void StartSprint();
 	void StopSprint();
 
-public:	
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		USoundCue* FootstepCue;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Audio")
+		UAudioComponent* FootstepAudioComponent;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void PostInitializeComponents();
 
 	UFUNCTION(BlueprintCallable, Category = "Wifi")
 	FORCEINLINE class UPlayerWifiModule* getPlayerWifiModule() const { return playerModule; }
