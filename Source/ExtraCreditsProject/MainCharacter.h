@@ -20,6 +20,8 @@ protected:
 
 	float forwardMovement = 0.0f;
 	float strafeMovement = 0.0f;
+	float defaultWalkingSpeed = 0.0f;
+	float sprintVal = 5.0f;
 
 	//camera prototype
 	UPROPERTY(EditAnywhere, Category = "Camera")
@@ -37,8 +39,11 @@ protected:
 	//handles moving forward and back
 	void MoveForward(float Val);
 
-	//hadles strafing left and right
+	//handles strafing left and right
 	void MoveStrafe(float Val);
+
+	void StartSprint();
+	void StopSprint();
 
 public:	
 	// Called every frame

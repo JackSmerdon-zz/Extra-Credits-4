@@ -19,7 +19,6 @@ AMainCharacter::AMainCharacter()
 
 	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
-
 	MainCameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("MainCameraSpringArm"));
 	MainCameraSpringArm->SetupAttachment(RootComponent);
 	MainCameraSpringArm->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, 0.0f), FRotator(-90.0f, 0.0f, 0.0f));
@@ -34,6 +33,9 @@ AMainCharacter::AMainCharacter()
 
 	//Take control of the default Player
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	//Set default walking speed
+	defaultWalkingSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 // Called when the game starts or when spawned
@@ -46,12 +48,12 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-		FVector target;
-		target.X = forwardMovement;
-		target.Y = strafeMovement;
-		target += this->GetActorLocation();
-		FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
-		SetActorRotation(PlayerRot, ETeleportType::None);
+	FVector target;
+	target.X = forwardMovement;
+	target.Y = strafeMovement;
+	target += this->GetActorLocation();
+	FRotator PlayerRot = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), target);
+	SetActorRotation(PlayerRot, ETeleportType::None);
 
 }
 
@@ -63,6 +65,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	//bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveStrafe", this, &AMainCharacter::MoveStrafe);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::StartSprint);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::StopSprint);
 }
 
 void AMainCharacter::MoveForward(float Value)
@@ -98,4 +102,14 @@ void AMainCharacter::MoveStrafe(float Value)
 		
 	}
 	strafeMovement = Value;
+}
+
+void AMainCharacter::StartSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = defaultWalkingSpeed * sprintVal;
+}
+
+void AMainCharacter::StopSprint()
+{
+	GetCharacterMovement()->MaxWalkSpeed = defaultWalkingSpeed;
 }
