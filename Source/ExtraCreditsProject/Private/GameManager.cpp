@@ -2,6 +2,7 @@
 
 #include "Public/GameManager.h"
 #include "Public/GameTime.h"
+#include "Public/ManageDownloads.h"
 
 // Sets default values
 AGameManager::AGameManager()
@@ -10,6 +11,7 @@ AGameManager::AGameManager()
 	PrimaryActorTick.bCanEverTick = false;
 
 	gameTime = CreateDefaultSubobject<UGameTime>(TEXT("GameTime"));
+	manageDownloads = CreateDefaultSubobject<UManageDownloads>(TEXT("ManageDownloads"));
 }
 
 // Called when the game starts or when spawned
