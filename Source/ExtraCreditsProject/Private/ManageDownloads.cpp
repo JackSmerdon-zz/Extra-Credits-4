@@ -53,3 +53,19 @@ void UManageDownloads::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	}
 }
+
+FString UManageDownloads::getDownloadPercentAsFormattedText()
+{
+	if (wifiComponent->getWifiPercent() == 0)
+	{
+		return FString("Unable to find WIFI signal");
+	}
+	else if (wifiComponent->getWifiPercent() < minDownloadStrength)
+	{
+		return FString("WIFI signal too weak, move closer...");
+	}
+	else
+	{
+		return FString(FString::FromInt(downloadPercent * 100) + "%");
+	}
+}
