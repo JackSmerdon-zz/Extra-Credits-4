@@ -35,6 +35,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Downloads")
 	int32 timeRemaining = 30;
 
+	//minium signal strength to start downloading
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Downloads")
+	float minDownloadStrength = 0.5f;
+
 public:	
 	// Sets default values for this component's properties
 	UManageDownloads();
